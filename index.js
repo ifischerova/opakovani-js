@@ -2,9 +2,15 @@
 
 /* tady bude tvůj kód */
 let movies = []
+
 fetch('https://apps.kodim.cz/daweb/trening-api/apis/movie-api/movies')
   .then((response) => response.json())
-  .then((data) => showMovies(data)); 
+  .then((data) => {
+    movies = data;
+    showMovies();
+  }); 
+
+
 
 // Parametry musi mit stejny nazev, jako jsou jednotlive klice v jsonu
 
@@ -35,22 +41,24 @@ const Movie = ({ title, posterUrl, url, year, genres }) => {
 // div s id "movies" do ktereho vypisuji jednotlive filmy
 const movieList = document.querySelector('#movies')
 
-const showMovies = (movies, asc = true) => {
+const showMovies = (asc = true) => {
   //porovnava nazvy filmu, vzdy dva proti sobe
   //localeCompare je kvuli diakritice
+  // movies funguji proto, ze jsou globalni promenna definovana ve druhem callbacku
   movies.sort((movieA, movieB) => movieA.title.localeCompare(movieB.title, 'cs'));
   if (asc === false ) {
     movies.reverse();
   }
 
-// z kazdeho filmu udela komponentu a tu pak nahraje do HTML, nahrava jednu komponentu po druhe.
+// z kazdeho filmu udela komponentu a tu pak nahraje do HTML, nahrava jednu komponentu po druhe.\
+  movieList.innerHTML = '';
   movies.forEach((movie) => {
-    movieList.innerHTML += Movie(movie)
-  })
+    movieList.innerHTML += Movie(movie);
+  });
 
   // Vytvori seznam komponent a ty pak najednou nahraje do HTML
   //movieList.innerHTML = movies.map((movie) => Movie(movie)).join('');
 }
 
-document.querySelector('#button-asc').addEventListener("click", () => showMovies(movies, true));
-document.querySelector('#button-desc').addEventListener("click", () => showMovies(movies, false));
+document.querySelector('#button-asc').addEventListener("click", () => showMovies(true));
+document.querySelector('#button-desc').addEventListener("click", () => showMovies(false));
