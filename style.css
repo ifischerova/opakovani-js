@@ -53,3 +53,17 @@ h1 {
   font-size: 0.8rem;
   font-style: italic;
 }
+
+.buttons {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+button {
+  padding: 10px 30px;
+}
+
+#button-asc {
+  margin-right: 20px;
+}
